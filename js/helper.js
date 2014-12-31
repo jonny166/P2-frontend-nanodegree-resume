@@ -49,7 +49,7 @@ var HTMLschoolDates = '<div class="date-text">%data%</div>';
 var HTMLschoolLocation = '<div class="location-text">%data%</div>';
 var HTMLschoolMajor = '<em><br>Major: %data%</em>';
 
-var HTMLonlineClasses = '<h3>Online Classes</h3>';
+var HTMLonlineClasses = '<h3 id="onlineClasses">Online Classes</h3>';
 var HTMLonlineTitle = '<a href="#">%data%';
 var HTMLonlineSchool = ' - %data%</a>';
 var HTMLonlineDates = '<div class="date-text">%data%</div>';
@@ -170,8 +170,14 @@ function initializeMap() {
     });
 
     // hmmmm, I wonder what this is about...
+    var contentString = marker.title;
+    var infowindow = new google.maps.InfoWindow({
+	content: contentString
+    });
+
     google.maps.event.addListener(marker, 'click', function() {
       // your code goes here!
+	infowindow.open(map,marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -242,3 +248,28 @@ window.addEventListener('resize', function(e) {
   // Make sure the map bounds get updated on page resize
   map.fitBounds(mapBounds);
 });
+
+
+
+/*
+Timeline
+*/
+var testData = [
+  {label: "education", times: [
+    {"starting_time": 1355752800000, "ending_time": 1355759900000},
+    {"starting_time": 1355767900000, "ending_time": 1355774400000},
+    /*{"starting_time": 965088000000, "ending_time": 965089000000},*/]},
+  {label: "work", times: [
+    {"starting_time": 1355759910000, "ending_time": 1355761900000}]},
+  ];
+
+var chart = d3.timeline();
+
+
+var width = 500;
+function timelineRect() {
+    var chart = d3.timeline();
+    var svg = d3.select("#timelineDiv").append("svg").attr("width", width)
+        .datum(testData).call(chart);
+}
+$(timelineRect);
