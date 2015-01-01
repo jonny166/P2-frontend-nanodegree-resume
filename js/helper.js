@@ -254,22 +254,113 @@ window.addEventListener('resize', function(e) {
 /*
 Timeline
 */
-var testData = [
-  {label: "education", times: [
-    {"starting_time": 1355752800000, "ending_time": 1355759900000},
-    {"starting_time": 1355767900000, "ending_time": 1355774400000},
-    /*{"starting_time": 965088000000, "ending_time": 965089000000},*/]},
-  {label: "work", times: [
-    {"starting_time": 1355759910000, "ending_time": 1355761900000}]},
-  ];
 
-var chart = d3.timeline();
+function dateFinder() {
 
+    // initializes an empty array
+    var dates = [];
+    
+    // iterates through school dates and appends each date to
+    // the date array
+    for (var schoolIndex in education.schools) {
+	dateArray = education.schools[schoolIndex].dates.split("-");
+	dateArray.push(education.schools[schoolIndex].name);
+	dates.push(dateArray);
+    }
+    for (var courseIndex in education.onlineCourses) {
+	dateArray = education.onlineCourses[courseIndex].dates.split("-");
+	dateArray.push(education.onlineCourses[courseIndex].title);
+	dates.push(dateArray);
+    }
 
-var width = 500;
-function timelineRect() {
-    var chart = d3.timeline();
-    var svg = d3.select("#timelineDiv").append("svg").attr("width", width)
-        .datum(testData).call(chart);
+    // iterates through job dates and appends each date to
+    // the date array
+    for (var jobIndex in work.jobs) {
+	dateArray = work.jobs[jobIndex].dates.split("-");
+	dateArray.push(work.jobs[jobIndex].employer);
+	dates.push(dateArray);
+    }
+
+    console.log(dates);
+    var convertedDates = [];
+    for (var dateIndex in dates){
+	var startDate = Date.parse(dates[dateIndex][0]);
+	var endDate = Date.parse(dates[dateIndex][1]);
+	if(isNaN(endDate) === true){
+	    endDate = Date.now();
+	}
+	convertedDates.push([startDate, endDate, dates[dateIndex][2]]);
+    }
+    return convertedDates;
 }
-$(timelineRect);
+
+function createTimeline() {
+    var timeData = dateFinder();
+    var w = 500;
+    var h = 150;
+    var barPadding = 1;
+    var padding = 30;
+    var startDate = Date.parse("January 1, 2000");
+    var endDate = Date.now();
+    var timeSpan = endDate - startDate;
+
+    var svg = d3.select("#timelineDiv")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+    var xScale = d3.scale.linear()
+        .domain([0, d3.max(timeData, function(d) { return d[1]; })])
+        .range([0, w]);
+
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+	.ticks(5)
+        .orient("bottom");
+    
+    svg.append("g")
+	.attr("class", "axis")  //Assign "axis" class
+	.attr("transform", "translate(0," + (h - padding) + ")")
+	.call(xAxis);
+
+    $(".axis.line").css("fill", "none");
+    $(".axis.line").css("stroke", "black");
+    $(".axis.line").css("shape-rendering", "crispEdges");
+
+    svg.selectAll("rect")
+	.data(timeData)
+	.enter()
+	.append("rect")
+	.attr("x", function(d, i) {
+	    var eventStart = d[0] - startDate;
+	    return (eventStart / timeSpan) * w;
+	})
+	//.attr("y", h-20)
+	.attr("y", function(d, i) {
+	    return i * (h / timeData.length);
+	})
+	.attr("width", function(d, i) {
+	    var eventSpan = d[1] - d[0];
+	    return (eventSpan / timeSpan) * w;
+	})
+	.attr("height", h / timeData.length - barPadding)
+	.attr("fill", "teal");
+
+    svg.selectAll("text")
+	.data(timeData)
+	.enter()
+	.append("text")
+	.text(function(d) {
+	    console.log(d[2]);
+            return d[2];
+	})
+	.attr("x", function(d, i) {
+	    var eventStart = d[0] - startDate;
+	    return (eventStart / timeSpan) * w + 3;
+	})
+	.attr("y", function(d, i) {
+	    var height = h / timeData.length - barPadding;
+	    return i * (h / timeData.length) + height;
+	});
+
+}
+

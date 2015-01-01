@@ -66,14 +66,14 @@ work.jobs = [
     {
 	"employer": "Harris Corporation",
 	"position": "Software Engineer 1",
-	"dates": "2006 - 2007",
+	"dates": "May 2006 - Nov 2007",
 	"location": "Melbourne, FL",
 	"description": "Software developer at Harris corporation",
     },
     {
 	"employer": "Intec Telecom Systems",
 	"position": "Development Consultant",
-	"dates": "2004 - 2006",
+	"dates": "July 2004 - May 2006",
 	"location": "Atlanta, GA",
 	"description": "Developer for Intec Professional Services",
     },
@@ -99,7 +99,7 @@ education.schools = [
     {
 	"name": "Georgia Tech",
 	"degree": "BS",
-	"dates": "2000-2004",
+	"dates": "Aug 2000 - May 2004",
 	"location": "Atlanta, Georgia",
 	"majors": ["Computer Science",],
 	"url": "www.gatech.edu"
@@ -109,13 +109,13 @@ education.onlineCourses = [
     {
 	"title": "Intro to HTML and CSS",
 	"school": "Udacity",
-	"dates": "November 2014",
+	"dates": "Nov 2014 - Dec 2014",
 	"url": "Udacity.com"
     },
     {
 	"title": "JavaScript Basics",
 	"school": "Udacity",
-	"dates": "December 2014",
+	"dates": "Dec 2014 - Jan 2015",
 	"url": "Udacity.com"
     }
 ];
@@ -184,6 +184,9 @@ projects.display = function (){
 }
 
 projects.display();
+
+
+createTimeline();
 
 
 // Add string formatting functionality
