@@ -13,20 +13,20 @@ These are HTML strings. As part of the course, you'll be using JavaScript functi
 replace the %data% placeholder text you see in them.
 */
 var HTMLheaderName = '<h1 id="name">%data%</h1>';
-var HTMLheaderRole = '<span>%data%</span><hr/>';
+var HTMLheaderRole = '<span class="white-text">%data%</span><hr/>';
 
-var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
-var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
-var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
-var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span><span class="white-text">%data%</span></li>';
-var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
-var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
-var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
+var HTMLcontactGeneric = '<li class="flex-item"><span class="teal-text">%contact%</span><span class="white-text">%data%</span></li>';
+var HTMLmobile = '<li class="flex-item"><span class="teal-text">mobile</span><span class="white-text">%data%</span></li>';
+var HTMLemail = '<li class="flex-item"><span class="teal-text">email</span><span class="white-text">%data%</span></li>';
+var HTMLtwitter = '<li class="flex-item"><span class="teal-text">twitter</span><span class="white-text">%data%</span></li>';
+var HTMLgithub = '<li class="flex-item"><span class="teal-text">github</span><span class="white-text">%data%</span></li>';
+var HTMLblog = '<li class="flex-item"><span class="teal-text">blog</span><span class="white-text">%data%</span></li>';
+var HTMLlocation = '<li class="flex-item"><span class="teal-text">location</span><span class="white-text">%data%</span></li>';
 
 var HTMLbioPic = '<img src="%data%" class="biopic">';
 var HTMLWelcomeMsg = '<span class="welcome-message">%data%</span>';
 
-var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
+var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills"></ul>';
 var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
 
 var HTMLworkStart = '<div class="work-entry"></div>';
@@ -40,7 +40,7 @@ var HTMLprojectStart = '<div class="project-entry"></div>';
 var HTMLprojectTitle = '<a href="#">%data%</a>';
 var HTMLprojectDates = '<div class="date-text">%data%</div>';
 var HTMLprojectDescription = '<p><br>%data%</p>';
-var HTMLprojectImage = '<img src="%data%">';
+var HTMLprojectImage = '<img src="%data%" class="projectpic">';
 
 var HTMLschoolStart = '<div class="education-entry"></div>';
 var HTMLschoolName = '<a href="#">%data%';
@@ -287,7 +287,7 @@ function dateFinder() {
 	var startDate = Date.parse(dates[dateIndex][0]);
 	var endDate = Date.parse(dates[dateIndex][1]);
 	if(isNaN(endDate) === true){
-	    endDate = Date.now();
+	    endDate = new Date();
 	}
 	convertedDates.push([startDate, endDate, dates[dateIndex][2]]);
     }
@@ -296,71 +296,68 @@ function dateFinder() {
 
 function createTimeline() {
     var timeData = dateFinder();
-    var w = 500;
+    var w = 700;
     var h = 150;
     var barPadding = 1;
-    var padding = 30;
-    var startDate = Date.parse("January 1, 2000");
-    var endDate = Date.now();
-    var timeSpan = endDate - startDate;
+    var rightPadding = 150;
+    var bottomPadding = 20;
+    var startDate = d3.min(timeData, function(d) { return d[0]; })
+    var endDate = new Date(); //today
 
     var svg = d3.select("#timelineDiv")
         .append("svg")
         .attr("width", w)
+	.attr("id", "timeline")
         .attr("height", h);
-    var xScale = d3.scale.linear()
-        .domain([0, d3.max(timeData, function(d) { return d[1]; })])
-        .range([0, w]);
-
+    var xScale = d3.time.scale()
+        .domain([startDate, endDate])
+        .range([0, w - rightPadding]);
+    var yScale = d3.scale.linear()
+        .domain([0, timeData.length])
+        .range([0, h - bottomPadding]);
+    
+    var formatAsDate = d3.time.format("%Y-%b");
     var xAxis = d3.svg.axis()
         .scale(xScale)
-	.ticks(5)
+	.ticks(7)
+	.tickFormat(formatAsDate)
         .orient("bottom");
     
-    svg.append("g")
-	.attr("class", "axis")  //Assign "axis" class
-	.attr("transform", "translate(0," + (h - padding) + ")")
-	.call(xAxis);
-
-    $(".axis.line").css("fill", "none");
-    $(".axis.line").css("stroke", "black");
-    $(".axis.line").css("shape-rendering", "crispEdges");
-
     svg.selectAll("rect")
 	.data(timeData)
 	.enter()
 	.append("rect")
 	.attr("x", function(d, i) {
-	    var eventStart = d[0] - startDate;
-	    return (eventStart / timeSpan) * w;
+	    return xScale(d[0]);
 	})
-	//.attr("y", h-20)
 	.attr("y", function(d, i) {
-	    return i * (h / timeData.length);
+	    return yScale(i);
 	})
 	.attr("width", function(d, i) {
-	    var eventSpan = d[1] - d[0];
-	    return (eventSpan / timeSpan) * w;
+	    return xScale(d[1]) - xScale(d[0]);
 	})
-	.attr("height", h / timeData.length - barPadding)
-	.attr("fill", "teal");
+	.attr("height", (h - bottomPadding) / timeData.length - barPadding)
+	.attr("fill", "#33A1A1");
 
     svg.selectAll("text")
 	.data(timeData)
 	.enter()
 	.append("text")
 	.text(function(d) {
-	    console.log(d[2]);
             return d[2];
 	})
+	.attr("class", "timelineLabel")
 	.attr("x", function(d, i) {
-	    var eventStart = d[0] - startDate;
-	    return (eventStart / timeSpan) * w + 3;
+	    return xScale(d[0]);
 	})
 	.attr("y", function(d, i) {
-	    var height = h / timeData.length - barPadding;
-	    return i * (h / timeData.length) + height;
+	    return yScale(i + 1) - barPadding;
 	});
+
+    svg.append("g")
+	.attr("class", "axis")  //Assign "axis" class after data text labels
+	.attr("transform", "translate(0," + (h - bottomPadding) + ")")
+	.call(xAxis);
 
 }
 

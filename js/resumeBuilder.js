@@ -15,9 +15,10 @@ var bio = {"name": "Kathy Church",
 	       "email": "kathy.church@gmail.com",
 	       "location": "Avondale Estates, GA"
 	   },
-	   "bioPic": "http://placehold.it/350x150",
+	   //"bioPic": "http://placehold.it/350x150",
+	   "bioPic": "images/me.jpg",
 	   "welcomeMessage": "Welcome to my interactive resume!",
-	   "skills": ["Python", "Web Development", "Gittin r done"]};
+	   "skills": ["Python", "Web Development", "Gittin-r-done"]};
 
 bio.display = function() {
     var formattedBioPic = HTMLbioPic.replace("%data%", this.bioPic);
@@ -161,8 +162,8 @@ projects.projects = [
 	"title": "Interactive Resume",
 	"date": "December 2014",
 	"description": "Interactive resume built using JavaScript",
-	"images": ["http://placehold.it/350x150",
-		   "http://placehold.it/350x150"
+	"images": ["images/project_pic2.jpg",
+		   "images/project_pic1.jpg",
 		  ]
     }
 ];

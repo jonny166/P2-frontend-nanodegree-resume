@@ -1,7 +1,7 @@
 * {
   padding:0;
   margin:0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Oxygen', sans-serif;
 }
 
 .clearfix {
@@ -11,11 +11,13 @@
 .education-entry, .work-entry, .project-entry {
   padding-left: 5%;
   padding-right: 5%;
+  background-color: #FFFFEB;
 }
 
 h1 {
   font-size: 40px;
-  color: #F5A623;
+  /*color: #F5A623;*/
+  color: #993366;
   line-height: 48px;
   display: inline;
 }
@@ -23,9 +25,11 @@ h1 {
 h2 {
   font-weight: bold;
   font-size: 24px;
-  color: #999999;
+  /*color: #999999;*/
+  color: #33A1A1;
   line-height: 29px;
   padding: 10px;
+  background-color: #FFFFEB;
 }
 
 h3 {
@@ -82,12 +86,14 @@ a {
 .welcome-message {
   font-style: italic;
   font-size: 18px;
-  color: #F3F3F3;
+  /*color: #F3F3F3;*/
+  color: #33A1A1;
   line-height: 28px;
 }
 
 #skillsH3 {
-  color: #F5AE23;
+  /*color: #F5AE23;*/
+    color: #993366;
   display: none;
 }
 
@@ -99,9 +105,26 @@ a {
   color: #F5AE23;
 }
 
+.teal {
+    background-color: #33A1A1;
+}
+
+.teal-text {
+    color: #33A1A1;
+}
+
+.mauve {
+    background-color: #944D70;
+}
+
+.mauve-text {
+    color:  #944D70;
+}
+
 .white-text {
   font-weight: bold;
-  color: #FFFFFF;
+  color: #FFFFEB;
+/*color: #FFFFFF;*/
 }
 
 .gray {
@@ -110,13 +133,21 @@ a {
   clear:both;
 }
 
+.off-white {
+  background-color: #FFFFEB;
+  padding-bottom: 10px;
+  clear:both;
+}
+
 .dark-gray {
-  background-color: #4A4A4A;
+    /*background-color: #4A4A4A;*/
+    background-color: #334C4C;
 }
 
 /* TODO: Replace with image later */
 #header {
-  background-color: #484848;
+    /*background-color: #484848;*/
+    background-color: #334C4C;
 }
 
 .flex-box {
@@ -145,6 +176,12 @@ ul {
   width: 200px;
   display: none;
 }
+
+.projectpic {
+  padding: 10px;
+  width: 200px;
+}
+
 
 img {
   padding: 10px;
@@ -212,4 +249,32 @@ span {
   .biopic {
     display: block;
   }
+}
+
+/* Timeline stuff */
+#timelineDiv {
+  height: 100%;
+  width: 100%;
+  padding-bottom: 5%;
+}
+
+#timeline {
+    margin-left: 5%;
+}
+
+.timelineLabel {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
 }
