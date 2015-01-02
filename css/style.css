@@ -11,7 +11,7 @@
 .education-entry, .work-entry, .project-entry {
   padding-left: 5%;
   padding-right: 5%;
-  background-color: #FFFFEB;
+/*background-color: #FFFFEB;*/
 }
 
 h1 {
@@ -29,7 +29,7 @@ h2 {
   color: #33A1A1;
   line-height: 29px;
   padding: 10px;
-  background-color: #FFFFEB;
+  /*background-color: #FFFFEB;*/
 }
 
 h3 {
@@ -113,6 +113,13 @@ a {
     color: #33A1A1;
 }
 
+.light-mauve {
+    background-color: #E3D1DA;
+    padding-bottom: 10px;
+    clear:both;
+
+}
+
 .mauve {
     background-color: #944D70;
 }
@@ -138,6 +145,7 @@ a {
   padding-bottom: 10px;
   clear:both;
 }
+
 
 .dark-gray {
     /*background-color: #4A4A4A;*/
